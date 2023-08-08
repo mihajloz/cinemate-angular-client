@@ -19,7 +19,8 @@ export class MovieCardComponent {
   constructor(
     public fetchApiData: UserRegistrationService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -47,4 +48,84 @@ export class MovieCardComponent {
   viewUserProfile(): void {
     this.router.navigate(['/profile']);
   }
+
+  isFavoriteMovie(movieID: string): boolean {
+    return this.fetchApiData.isFavoriteMovie(movieID);
+  }
+
+  toggleFavoriteMovie(movieID: string): void {
+    const username = localStorage.getItem('username') || '';
+
+    if (this.isFavoriteMovie(movieID)) {
+      this.removeFromFavorites(username, movieID);
+    } else {
+      this.addToFavorites(username, movieID);
+    }
+  }
+
+  addToFavorites(username: string, movieID: string): void {
+    this.fetchApiData.addMovieToFavorites(username, movieID).subscribe(
+      (response) => {
+        this.snackBar.open('Added to favorites!', 'OK', {
+          duration: 2000,
+        });
+      },
+      (error) => {
+        console.error(error);
+        this.snackBar.open('Failed to add to favorites.', 'OK', {
+          duration: 2000,
+        });
+      }
+    );
+  }
+
+  removeFromFavorites(username: string, movieID: string): void {
+    this.fetchApiData.deleteMovieFromFavorites(username, movieID).subscribe(
+      (response) => {
+        this.snackBar.open('Removed from favorites!', 'OK', {
+          duration: 2000,
+        });
+      },
+      (error) => {
+        console.error(error);
+        this.snackBar.open('Failed to remove from favorites.', 'OK', {
+          duration: 2000,
+        });
+      }
+    );
+  }
+
+  // toggleFavoriteMovie(movieID: string): void {
+  //   const username = localStorage.getItem('username') || '';
+
+  //   if (this.fetchApiData.isFavoriteMovie(movieID)) {
+  //     this.fetchApiData.deleteMovieFromFavorites(username, movieID).subscribe(
+  //       (response) => {
+  //         this.snackBar.open('Removed from favorites!', 'OK', {
+  //           duration: 2000,
+  //         });
+  //       },
+  //       (error) => {
+  //         console.error(error);
+  //         this.snackBar.open('Failed to remove from favorites.', 'OK', {
+  //           duration: 2000,
+  //         });
+  //       }
+  //     );
+  //   } else {
+  //     this.fetchApiData.addMovieToFavorites(username, movieID).subscribe(
+  //       (response) => {
+  //         this.snackBar.open('Added to favorites!', 'OK', {
+  //           duration: 2000,
+  //         });
+  //       },
+  //       (error) => {
+  //         console.error(error);
+  //         this.snackBar.open('Failed to add to favorites.', 'OK', {
+  //           duration: 2000,
+  //         });
+  //       }
+  //     );
+  //   }
+  // }
 }

@@ -157,6 +157,12 @@ export class UserRegistrationService {
       .pipe(map(this.extractResponseData), catchError(this.handleError));
   }
 
+  // Check if a movie is in the user's favorites
+  public isFavoriteMovie(MovieID: string): boolean {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user.FavoriteMovies && user.FavoriteMovies.indexOf(MovieID) >= 0;
+  }
+
   // Making the API call to edit a user's details
   public editUser(Username: string, updatedUser: any): Observable<any> {
     const token = localStorage.getItem('token');
