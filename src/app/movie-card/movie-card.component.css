@@ -1,0 +1,25 @@
+body {
+  background-color: #1d1e1f;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #1d1e1f;
+  padding-right: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.movie-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #1d1e1f;
+}
+
+.movie-card mat-card {
+  flex: 1 1 300px;
+  margin: 10px;
+  max-width: 300px;
+}
