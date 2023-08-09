@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserRegistrationService } from '../fetch-api-data.service';
+import { FetchApiDataService } from '../fetch-api-data.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -13,14 +13,21 @@ export class UserProfileComponent implements OnInit {
   editMode: boolean = false;
 
   constructor(
-    private fetchApiData: UserRegistrationService,
+    private fetchApiData: FetchApiDataService,
     private router: Router
   ) {}
 
+  /**
+   * Lifecycle hook called after component initialization.
+   * Retrieves the user profile information.
+   */
   ngOnInit(): void {
     this.getUserProfile();
   }
 
+  /**
+   * Retrieves the user's profile information from the API.
+   */
   getUserProfile(): void {
     const username = localStorage.getItem('username');
     if (username) {
@@ -31,10 +38,17 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  /**
+   * Enables the edit mode for user profile.
+   */
   editProfile(): void {
     this.editMode = true;
   }
 
+  /**
+   * Saves the updated user profile information to the backend.
+   * Updates the user variable and disables edit mode on success.
+   */
   saveProfile(): void {
     const username = localStorage.getItem('username');
     if (username) {
@@ -46,6 +60,10 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  /**
+   * Deletes the user profile from the backend.
+   * Redirects to the login page on success.
+   */
   deleteProfile(): void {
     const username = localStorage.getItem('username');
     if (username) {
@@ -62,8 +80,10 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
+  /**
+   * Cancels the edit mode and resets the form to the original user data.
+   */
   cancelEdit(): void {
-    // Cancel the edit mode and reset the form to the original user data
     this.editMode = false;
     this.updatedUser = { ...this.user };
   }

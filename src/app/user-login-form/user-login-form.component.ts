@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserRegistrationService } from '../fetch-api-data.service';
+import { FetchApiDataService } from '../fetch-api-data.service';
 import { Router } from '@angular/router';
 
 import { MatDialogRef } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ export class UserLoginFormComponent implements OnInit {
   @Input() loginData = { Username: '', Password: '' };
 
   constructor(
-    public fetchApiData: UserRegistrationService,
+    public fetchApiData: FetchApiDataService,
     public dialogRef: MatDialogRef<UserLoginFormComponent>,
     public snackBar: MatSnackBar,
     private router: Router
@@ -22,6 +22,11 @@ export class UserLoginFormComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Logs in the user by sending login data to the backend.
+   * Saves username and token to local storage on success.
+   * Navigates to the movies page and displays a success notification.
+   */
   loginUser(): void {
     this.fetchApiData.userLogin(this.loginData).subscribe(
       (result) => {
